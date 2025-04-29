@@ -1,266 +1,81 @@
-import { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AppContext);
+
+  const { user, doctor, isAuth, setISAuth } = useContext(AppContext);
+
+
   const [showMenu, setShowMenu] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
+  
 
   return (
-    <nav className="sticky top-0 z-50 bg-surface shadow-sm backdrop-blur-sm bg-opacity-90">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <img
-              onClick={() => navigate("/")}
-              className="h-8 w-auto cursor-pointer hover:opacity-80 transition-opacity"
-              src={assets.logo}
-              alt="Logo"
-            />
-          </div>
+    <div className="flex items-center justify-between text-sm py-3 mb-5 border-b border-b-gray-400">
+      <img
+        onClick={() => navigate("/")}
+        src={assets.logo_doc}
+        alt="logo"
+        className="w-41 h-13 cursor-pointer"
+      />
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-8">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "text-primary"
-                      : "text-text-light hover:text-primary"
-                  }`
-                }
-              >
-                HOME
-              </NavLink>
-              <NavLink
-                to="/doctors"
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "text-primary"
-                      : "text-text-light hover:text-primary"
-                  }`
-                }
-              >
-                ALL DOCTORS
-              </NavLink>
-              <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "text-primary"
-                      : "text-text-light hover:text-primary"
-                  }`
-                }
-              >
-                ABOUT
-              </NavLink>
-              <NavLink
-                to="/contact"
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors duration-300 ${
-                    isActive
-                      ? "text-primary"
-                      : "text-text-light hover:text-primary"
-                  }`
-                }
-              >
-                CONTACT
-              </NavLink>
+      {/* Desktop Menu */}
+      <ul className="hidden md:flex items-start gap-10 font-medium">
+        <NavLink to="/"> <li className="py-3">HOME</li> </NavLink>
+        <NavLink to="/doctors"> <li className="py-3">DOCTORS</li> </NavLink>
+        
+      </ul>
+
+      <div className="flex items-center gap-4">
+        {isAuth ? (
+          
+          <div className="flex items-center gap-2 cursor-pointer group relative">
+            <p>{user?.userName || doctor?.doctorName}</p>
+            <img className="w-2.5" src={assets.dropdown_icon} alt="dropdown" />
+            <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
+              <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
+                <p onClick={() => navigate("/my-appointment")} className="hover:text-black cursor-pointer">My Appointments</p>
+                <p onClick={() => {setISAuth(false)}} className="hover:text-black cursor-pointer">Log Out</p>
+              </div>
             </div>
           </div>
+         
+          
 
-          {/* User Menu */}
-          <div className="hidden md:block">
-            {user ? (
-              <div className="relative group">
-                <div className="flex items-center space-x-2 cursor-pointer">
-                  <img
-                    className="h-8 w-8 rounded-full ring-2 ring-primary ring-offset-2"
-                    src={user.photoURL || assets.profile_pic}
-                    alt={user.displayName || "Profile"}
-                  />
-                  <svg
-                    className="h-4 w-4 text-text-light"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
-                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-surface ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <div className="py-1">
-                    <button
-                      onClick={() => navigate("/my-profile")}
-                      className="block w-full text-left px-4 py-2 text-sm text-text hover:bg-background"
-                    >
-                      My Profile
-                    </button>
-                    <button
-                      onClick={() => navigate("/my-appointments")}
-                      className="block w-full text-left px-4 py-2 text-sm text-text hover:bg-background"
-                    >
-                      My Appointments
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-text hover:bg-background"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="bg-primary text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-primary-dark transition-colors duration-300"
-              >
-                Sign In
-              </button>
-            )}
+        ) : (
+          <button
+            onClick={() => navigate("/user-register")}
+            className="cursor-pointer bg-orange-500 py-2 text-white px-7 rounded-full font-light hidden md:block"
+          >
+            Create Account
+          </button>
+        )}
+        {/* Mobile Menu */}
+        <img
+          onClick={() => setShowMenu(true)}
+          className="w-6 md:hidden cursor-pointer"
+          src={assets.menu_icon}
+          alt="Menu"
+        />
+
+        <div className={`fixed top-0 right-0 bg-white shadow-lg h-screen w-64 z-50 transition-transform duration-300 ease-in-out ${showMenu ? "translate-x-0" : "translate-x-full"} md:hidden`}>
+          <div className="flex items-center justify-between px-5 py-6 border-b">
+            <img className="w-40 h-18" src={assets.logo_doc} alt="Logo" />
+            <img className="w-5 cursor-pointer" onClick={() => setShowMenu(false)} src={assets.cross_icon} alt="Close" />
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setShowMenu(true)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-text hover:text-primary hover:bg-background focus:outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+          <ul className="flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium">
+            <NavLink onClick={() => setShowMenu(false)} to="/">Home</NavLink>
+            <NavLink onClick={() => setShowMenu(false)} to="/doctors">Doctors</NavLink>
+            {/* <NavLink onClick={() => setShowMenu(false)} to="/about">About Us</NavLink> */}
+            {/* <NavLink onClick={() => setShowMenu(false)} to="/contact">Contact</NavLink> */}
+          </ul>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out ${
-          showMenu ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="relative min-h-screen bg-surface shadow-xl">
-          <div className="flex items-center justify-between px-4 py-4 border-b">
-            <img src={assets.logo} className="h-8 w-auto" alt="Logo" />
-            <button
-              onClick={() => setShowMenu(false)}
-              className="p-2 rounded-md text-text hover:text-primary hover:bg-background focus:outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div className="px-4 py-6 space-y-4">
-            <NavLink
-              to="/"
-              onClick={() => setShowMenu(false)}
-              className={({ isActive }) =>
-                `block px-4 py-2 text-base font-medium rounded-lg transition-colors duration-300 ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text hover:bg-background"
-                }`
-              }
-            >
-              HOME
-            </NavLink>
-            <NavLink
-              to="/doctors"
-              onClick={() => setShowMenu(false)}
-              className={({ isActive }) =>
-                `block px-4 py-2 text-base font-medium rounded-lg transition-colors duration-300 ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text hover:bg-background"
-                }`
-              }
-            >
-              ALL DOCTORS
-            </NavLink>
-            <NavLink
-              to="/about"
-              onClick={() => setShowMenu(false)}
-              className={({ isActive }) =>
-                `block px-4 py-2 text-base font-medium rounded-lg transition-colors duration-300 ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text hover:bg-background"
-                }`
-              }
-            >
-              ABOUT
-            </NavLink>
-            <NavLink
-              to="/contact"
-              onClick={() => setShowMenu(false)}
-              className={({ isActive }) =>
-                `block px-4 py-2 text-base font-medium rounded-lg transition-colors duration-300 ${
-                  isActive
-                    ? "bg-primary text-white"
-                    : "text-text hover:bg-background"
-                }`
-              }
-            >
-              CONTACT
-            </NavLink>
-            {!user && (
-              <button
-                onClick={() => {
-                  setShowMenu(false);
-                  navigate("/login");
-                }}
-                className="w-full bg-primary text-white px-4 py-2 rounded-lg text-base font-medium hover:bg-primary-dark transition-colors duration-300"
-              >
-                Sign In
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </nav>
+    </div>
   );
 };
 

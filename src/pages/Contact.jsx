@@ -18,13 +18,13 @@ const Contact = () => {
         <div className="flex flex-col justify-center items-start gap-6">
           <p className=" font-semibold text-lg text-gray-600">OUR OFFICE</p>
           <p className=" text-gray-500">
-            54709 Ankit Yadav <br /> 3,Dwarka Mor, Delhi, India
+          Incubex HSR21, 5th Main Rd, Sector 6, <br /> HSR Layout Bengaluru, Karnataka - 560068
           </p>
           <p className=" text-gray-500">
-            Tel: 91+9988049348 <br /> Email: khairwalankit7@gmail.com
+            Tel: +1-212-456-7890 <br /> Email: aamir557ahmad@gmail.com
           </p>
           <p className=" font-semibold text-lg text-gray-600">
-            CAREERS AT PRESCRIPTO
+            CAREERS AT MediSchedule
           </p>
           <p className=" text-gray-500">
             Learn more about our teams and job openings.

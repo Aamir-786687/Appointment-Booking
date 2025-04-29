@@ -1,21 +1,37 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { assets } from "../assets/assets";
+import { AppContext } from "../context/AppContext";
 
 const MyProfile = () => {
+  const { user } = useContext(AppContext);
   const [isEdit, setIsEdit] = useState(false);
 
   const [userData, setUserData] = useState({
-    name: "Richard James",
-    image: assets.profile_pic,
-    email: "richardjames@gmail.com",
-    phone: "+1  123 456 7890",
+    name: user?.displayName || "Anonymous",
+    image: user?.photoURL || assets.profile_pic,
+    email: user?.email || "",
+    phone: "",
     address: {
-      line1: "57th Cross, Richmond",
-      line2: "Circle, Church Road, London",
+      line1: "",
+      line2: "",
     },
     gender: "Male",
-    dob: "2000-01-20",
+    dob: "",
   });
+
+  useEffect(() => {
+    // Load user data from localStorage
+    const storedUserData = localStorage.getItem(`userData_${user?.id}`);
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, [user]);
+
+  const handleSave = () => {
+    // Save user data to localStorage
+    localStorage.setItem(`userData_${user?.id}`, JSON.stringify(userData));
+    setIsEdit(false);
+  };
 
   return (
     <div className="max-w-lg flex flex-col gap-2 text-sm">
@@ -125,7 +141,7 @@ const MyProfile = () => {
       <div className="mt-10">
         {isEdit ? (
           <button
-            onClick={() => setIsEdit(false)}
+            onClick={handleSave}
             className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
           >
             Save information
