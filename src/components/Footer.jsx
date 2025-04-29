@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import { Mail, MapPin, Phone, Ambulance, Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -15,29 +16,41 @@ const Footer = () => {
         </div>
         {/* Center Part  */}
         <div>
-         <p className="text-xl font-medium mb-5">COMPANY</p>
-         <ul className="flex flex-col gap-2 text-gray-600">
+          <p className="text-xl font-medium mb-5">COMPANY</p>
+          <ul className="flex flex-col gap-2 text-gray-600">
             <li>Home</li>
             <li>About Us</li>
             <li>Contact Us</li>
             <li>Privacy Policy</li>
-         </ul>
+          </ul>
         </div>
         {/* Right Part  */}
         <div>
-         <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
-         <ul className="flex flex-col gap-3 text-gray-600">
-            <li>📍 Location: [Your City, Country]</li>
-            <li>📞 Contact: +91 XXXXXXXXXX</li>
-            <li>📧 Email: support@docconnect.com</li>
-           
-         </ul>
+          <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
+          <ul className="flex flex-col gap-3 text-gray-600">
+            <li className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" /> 
+              Location: [Your City, Country]
+            </li>
+            <li className="flex items-center gap-2">
+              <Phone className="w-4 h-4" /> 
+              Contact: +91 XXXXXXXXXX
+            </li>
+            <li className="flex items-center gap-2">
+              <Mail className="w-4 h-4" /> 
+              Email: support@docconnect.com
+            </li>
+          </ul>
         </div>
       </div>
       <div>
-         <hr/>
-         <p className="py-3 text-sm text-center font-semibold">Copyright 2025 DocConnect. All rights reserved.</p>
-         <p className="text-sm text-center mb-3 font-medium">Your health, our priority! 🚑💙</p>
+        <hr/>
+        <p className="py-3 text-sm text-center font-semibold">Copyright 2025 DocConnect. All rights reserved.</p>
+        <p className="flex items-center justify-center gap-1 text-sm text-center mb-3 font-medium">
+          Your health, our priority! 
+          <Ambulance className="w-4 h-4 inline" /> 
+          <Heart className="w-4 h-4 inline text-red-500" />
+        </p>
       </div>
     </div>
   );
