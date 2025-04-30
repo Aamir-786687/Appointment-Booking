@@ -1,13 +1,17 @@
 import { useContext, useEffect, useState } from "react"
 import { AppContext } from "../context/AppContext"
 import { useNavigate } from "react-router-dom"
-import { Calendar, Clock } from "lucide-react"
+import { Calendar, Clock, Trash2 } from "lucide-react"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const MyAppointments = () => {
   const { user, isAuth } = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
   const [upcomingAppointments, setUpcomingAppointments] = useState([])
   const [pastAppointments, setPastAppointments] = useState([])
+  const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [appointmentToDelete, setAppointmentToDelete] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -15,6 +19,10 @@ const MyAppointments = () => {
       return
     }
 
+    loadAppointments()
+  }, [isAuth, user])
+
+  const loadAppointments = () => {
     // Retrieve appointments from localStorage
     const storedAppointments = JSON.parse(localStorage.getItem("appointments")) || []
 
@@ -29,7 +37,7 @@ const MyAppointments = () => {
     const upcoming = []
     const past = []
 
-    userAppointments.forEach((appointment) => {
+    userAppointments.forEach((appointment, index) => {
       const appointmentDate = new Date(appointment.appointmentDate)
       const appointmentTime = appointment.appointmentTime
 
@@ -37,10 +45,17 @@ const MyAppointments = () => {
       const [hours, minutes] = appointmentTime.split(":")
       appointmentDate.setHours(Number.parseInt(hours), Number.parseInt(minutes), 0, 0)
 
+      // Add unique ID for each appointment based on index if not present
+      const appointmentWithId = {
+        ...appointment,
+        id: appointment.id || `appointment-${index}-${Date.now()}`,
+        fullDate: appointmentDate,
+      }
+
       if (appointmentDate > currentDate) {
-        upcoming.push({ ...appointment, fullDate: appointmentDate })
+        upcoming.push(appointmentWithId)
       } else {
-        past.push({ ...appointment, fullDate: appointmentDate })
+        past.push(appointmentWithId)
       }
     })
 
@@ -52,7 +67,46 @@ const MyAppointments = () => {
 
     setUpcomingAppointments(upcoming)
     setPastAppointments(past)
-  }, [isAuth, user])
+  }
+
+  const handleDeleteClick = (appointment) => {
+    setAppointmentToDelete(appointment)
+    setShowConfirmModal(true)
+  }
+
+  const confirmDelete = () => {
+    if (!appointmentToDelete) return
+
+    // Get all appointments
+    const allAppointments = JSON.parse(localStorage.getItem("appointments")) || []
+
+    // Find the appointment to delete
+    const updatedAppointments = allAppointments.filter((appointment) => {
+      // Compare relevant properties since the stored appointments might not have IDs
+      return !(
+        appointment.doctorName === appointmentToDelete.doctorName &&
+        appointment.userName === appointmentToDelete.userName &&
+        appointment.appointmentDate === appointmentToDelete.appointmentDate &&
+        appointment.appointmentTime === appointmentToDelete.appointmentTime
+      )
+    })
+
+    // Save updated appointments back to localStorage
+    localStorage.setItem("appointments", JSON.stringify(updatedAppointments))
+
+    // Reload appointments to update the UI
+    loadAppointments()
+
+    // Close modal and show success message
+    setShowConfirmModal(false)
+    setAppointmentToDelete(null)
+    toast.success("Appointment cancelled successfully")
+  }
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false)
+    setAppointmentToDelete(null)
+  }
 
   if (!isAuth) {
     return (
@@ -101,10 +155,21 @@ const MyAppointments = () => {
                     className="bg-white border border-blue-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                   >
                     <div className="bg-blue-50 p-4 border-b border-blue-200">
-                      <h3 className="font-medium text-lg text-blue-900">{appointment.doctorName}</h3>
-                      <div className="flex items-center gap-2 text-sm mt-1 text-green-600">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span>Confirmed</span>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-medium text-lg text-blue-900">{appointment.doctorName}</h3>
+                          <div className="flex items-center gap-2 text-sm mt-1 text-green-600">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Confirmed</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleDeleteClick(appointment)}
+                          className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors"
+                          aria-label="Cancel appointment"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
                       </div>
                     </div>
                     <div className="p-4 space-y-3">
@@ -169,6 +234,35 @@ const MyAppointments = () => {
           )}
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Cancel Appointment</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to cancel your appointment with {appointmentToDelete?.doctorName} on{" "}
+              {appointmentToDelete?.appointmentDate} at {appointmentToDelete?.appointmentTime}?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                No, Keep It
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+              >
+                Yes, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} />
     </div>
   )
 }

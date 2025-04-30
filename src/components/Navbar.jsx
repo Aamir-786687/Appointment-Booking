@@ -1,19 +1,23 @@
-import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets";
-import { NavLink, useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
-import { ChevronDown } from "lucide-react";
+import { useContext, useState } from "react"
+import { assets } from "../assets/assets"
+import { NavLink, useNavigate } from "react-router-dom"
+import { AppContext } from "../context/AppContext"
+import { ChevronDown } from "lucide-react"
+
+// Import toast at the top of the file
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const { user, doctor, isAuth, setISAuth } = useContext(AppContext);
-  const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate()
+  const { user, doctor, isAuth, setISAuth } = useContext(AppContext)
+  const [showMenu, setShowMenu] = useState(false)
 
   return (
     <div className="sticky top-0 z-50 bg-white flex items-center justify-between text-sm py-3 mb-5 border-b border-b-gray-400">
       <img
         onClick={() => navigate("/")}
-        src={assets.logo}
+        src={assets.logo || "/placeholder.svg"}
         alt="logo"
         className="w-18 h-20 cursor-pointer -m-2 ml-8"
       />
@@ -35,15 +39,13 @@ const Navbar = () => {
             <ChevronDown className="w-4 h-4" />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
-                <p
-                  onClick={() => navigate("/my-appointment")}
-                  className="hover:text-black cursor-pointer"
-                >
+                <p onClick={() => navigate("/my-appointment")} className="hover:text-black cursor-pointer">
                   My Appointments
                 </p>
                 <p
                   onClick={() => {
-                    setISAuth(false);
+                    setISAuth(false)
+                    toast.success("Logged out successfully")
                   }}
                   className="hover:text-black cursor-pointer"
                 >
@@ -65,7 +67,7 @@ const Navbar = () => {
         <img
           onClick={() => setShowMenu(true)}
           className="w-6 md:hidden cursor-pointer"
-          src={assets.menu_icon}
+          src={assets.menu_icon || "/placeholder.svg"}
           alt="Menu"
         />
 
@@ -75,11 +77,11 @@ const Navbar = () => {
           } md:hidden`}
         >
           <div className="flex items-center justify-between px-5 py-6 border-b">
-            <img className="w-40 h-18" src={assets.logo_doc} alt="Logo" />
+            <img className="w-40 h-18" src={assets.logo_doc || "/placeholder.svg"} alt="Logo" />
             <img
               className="w-5 cursor-pointer"
               onClick={() => setShowMenu(false)}
-              src={assets.cross_icon}
+              src={assets.cross_icon || "/placeholder.svg"}
               alt="Close"
             />
           </div>
@@ -95,7 +97,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

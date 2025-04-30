@@ -1,14 +1,15 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
-import Doctors from "./pages/Doctors";
-import Footer from "./components/Footer";
-import Appointments from "./pages/Appointments";
-import UserSignup from "./pages/UserSignup";
-import UserLogin from "./pages/UserLogin";
-import MyCalendar from "./pages/Calender";
-import MyAppointments from "./pages/MyAppointments"; 
+import { Route, Routes } from "react-router-dom"
+import Home from "./pages/Home"
+import Navbar from "./components/Navbar"
+import Doctors from "./pages/Doctors"
+import Footer from "./components/Footer"
+import Appointments from "./pages/Appointments"
+import UserSignup from "./pages/UserSignup"
+import UserLogin from "./pages/UserLogin"
+import MyCalendar from "./pages/Calender"
+import MyAppointments from "./pages/MyAppointments"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   return (
@@ -22,11 +23,23 @@ function App() {
         <Route path="/User-register" element={<UserSignup />} />
         <Route path="/User-login" element={<UserLogin />} />
         <Route path="/calender" element={<MyCalendar />} />
-        <Route path="/my-appointment" element={<MyAppointments />} /> {/* ✅ added */}
+        <Route path="/my-appointment" element={<MyAppointments />} />
       </Routes>
       <Footer />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
