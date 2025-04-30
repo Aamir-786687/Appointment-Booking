@@ -8,7 +8,7 @@ import Appointments from "./pages/Appointments";
 import UserSignup from "./pages/UserSignup";
 import UserLogin from "./pages/UserLogin";
 import MyCalendar from "./pages/Calender";
-import MyAppointment from "./pages/MyAppointment"; // ✅ added
+import MyAppointments from "./pages/MyAppointments"; 
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         <Route path="/User-register" element={<UserSignup />} />
         <Route path="/User-login" element={<UserLogin />} />
         <Route path="/calender" element={<MyCalendar />} />
-        <Route path="/my-appointment" element={<MyAppointment />} /> {/* ✅ added */}
+        <Route path="/my-appointment" element={<MyAppointments />} /> {/* ✅ added */}
       </Routes>
       <Footer />
     </div>

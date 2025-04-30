@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import { ChevronDown } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,12 +21,10 @@ const Navbar = () => {
       {/* Desktop Menu */}
       <ul className="hidden md:flex items-start gap-10 font-medium">
         <NavLink to="/">
-          {" "}
-          <li className="py-3">HOME</li>{" "}
+          <li className="py-3">HOME</li>
         </NavLink>
         <NavLink to="/doctors">
-          {" "}
-          <li className="py-3">DOCTORS</li>{" "}
+          <li className="py-3">DOCTORS</li>
         </NavLink>
       </ul>
 
@@ -33,7 +32,7 @@ const Navbar = () => {
         {isAuth ? (
           <div className="flex items-center gap-2 cursor-pointer group relative">
             <p>{user?.userName || doctor?.doctorName}</p>
-            <img className="w-2.5" src={assets.dropdown_icon} alt="dropdown" />
+            <ChevronDown className="w-4 h-4" />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4">
                 <p
@@ -61,6 +60,7 @@ const Navbar = () => {
             Create Account
           </button>
         )}
+
         {/* Mobile Menu */}
         <img
           onClick={() => setShowMenu(true)}
