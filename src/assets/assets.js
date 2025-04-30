@@ -1,5 +1,5 @@
 import appointment_img from './appointment_img.png'
-import header_img from './header_img.png'
+import header_img from './header.png'
 import group_profiles from './group_profiles.png'
 import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
@@ -15,15 +15,15 @@ import info_icon from './info_icon.svg'
 import upload_icon from './upload_icon.png'
 import stripe_logo from './stripe_logo.png'
 import razorpay_logo from './razorpay_logo.png'
-import doc1 from './doc1.png'
-import doc2 from './doc2.png'
-import doc3 from './doc3.png'
-import doc4 from './doc4.png'
-import doc5 from './doc5.png'
+import doc1 from './doc1.webp'
+import doc2 from './doc2.webp'
+import doc3 from './doc3.webp'
+import doc4 from './doc4.webp'
+import doc5 from './doc5.webp'
 import doc6 from './doc6.png'
-import doc7 from './doc7.png'
+import doc7 from './doc7.webp'
 import doc8 from './doc8.png'
-import doc9 from './doc9.png'
+import doc9 from './doc9.webp'
 import doc10 from './doc10.png'
 import doc11 from './doc11.png'
 import doc12 from './doc12.png'
@@ -116,7 +116,7 @@ export const doctors = [
     },
     {
         _id: 'doc3',
-        name: 'Dr. Sarah Patel',
+        name: 'Dr. Sarah Alam',
         image: doc3,
         speciality: 'Dermatologist',
         degree: 'MBBS',

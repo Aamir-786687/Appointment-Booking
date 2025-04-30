@@ -21,7 +21,7 @@ const {setUser} = useContext(AppContext)
       return;
     }
     const userData = {userName,userEmail,userPassword}
-    console.log(userData);
+    // console.log(userData);
     setUser(userData)
     localStorage.setItem("user",JSON.stringify(userData))
     toast.success("Account created successfully!");
@@ -88,9 +88,7 @@ const {setUser} = useContext(AppContext)
                 Log In
               </span>
             </p>
-            <h1 className="text-center text-gray-600 mt-4" onClick={() => navigate("/Doctor-register")}>
-              If you're a Doctor <span className="text-blue-500 cursor-pointer">Register Here</span>
-            </h1>
+            
           </form>
         </div>
       </div>

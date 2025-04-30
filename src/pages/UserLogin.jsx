@@ -19,7 +19,7 @@ const UserLogin = () => {
       e.preventDefault();
       // const user = JSON.parse(localStorage.getItem("user"))
       
-      console.log(user)
+      // console.log(user)
       if(userEmail !== user.userEmail){
          toast.error("Email Not Found")
          return;

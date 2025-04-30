@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import RelatedDoctor from "../components/RelatedDoctor";
 
 const Appointments = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate()
   const { docId } = useParams();
   const { doctors, currencySymbol } = useContext(AppContext);
   const [docInfo, setDocInfo] = useState(null);
@@ -97,7 +97,7 @@ currDate.setMinutes(currDate.getMinutes() + 30)
   
     toast.success("Appointment booked successfully!");
     alert("Appointment Booked");
-    console.log("Appointment Booked:", appointmentDetails);
+    // console.log("Appointment Booked:", appointmentDetails);
   };
   
   
@@ -111,7 +111,7 @@ currDate.setMinutes(currDate.getMinutes() + 30)
   }, [docInfo]);
 
   useEffect(()=>{
-    console.log(docSlots)
+    // console.log(docSlots)
   },[docSlots])
 
   return (
